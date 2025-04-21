@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WiFi QR 코드 생성기</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 400px; margin: 50px auto; text-align: center; }
+    input, button { width: 100%; padding: 10px; margin: 10px 0; font-size: 1rem; }
+    #qrcode { margin-top: 20px; }
+  </style>
+  <!-- QRCode.js 라이브러리 로드 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+  <h1>WiFi QR 코드 생성기</h1>
+  <!-- SSID 입력 -->
+  <input type="text" id="ssid" placeholder="SSID 입력" />
+  <!-- Password 입력 -->
+  <input type="password" id="password" placeholder="Password 입력" />
+  <!-- 생성 버튼 -->
+  <button id="generate">생성하기</button>
+
+  <!-- QR 코드가 표시될 영역 -->
+  <div id="qrcode"></div>
+
+  <script>
+    document.getElementById('generate').addEventListener('click', function() {
+      const ssid = document.getElementById('ssid').value.trim();
+      const password = document.getElementById('password').value.trim();
+      if (!ssid) {
+        alert('SSID를 입력해주세요.');
+        return;
+      }
+      // WPA 고정, SSID와 Password를 이스케이프
+      const escapeInput = str => str.replace(/([\\;,\":])/g, '\\$1');
+      const wifiString = `WIFI:T:WPA;S:${escapeInput(ssid)};P:${escapeInput(password)};;`;
+      // 기존 QR 코드 제거
+      document.getElementById('qrcode').innerHTML = '';
+      // 새로운 QR 코드 생성
+      new QRCode(document.getElementById('qrcode'), {
+        text: wifiString,
+        width: 256,
+        height: 256,
+      });
+    });
+  </script>
+</body>
+</html>
