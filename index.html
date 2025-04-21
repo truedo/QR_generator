@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WiFi QR 코드 생성기</title>
+  <title>WiFi QR Code Generator</title>
   <style>
     body { font-family: Arial, sans-serif; max-width: 400px; margin: 50px auto; text-align: center; }
     input, button { width: 100%; padding: 10px; margin: 10px 0; font-size: 1rem; }
@@ -13,13 +13,13 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
-  <h1>WiFi QR 코드 생성기</h1>
+  <h1>WiFi QR Code Generator</h1>
   <!-- SSID 입력 -->
-  <input type="text" id="ssid" placeholder="SSID 입력" />
+  <input type="text" id="ssid" placeholder="SSID" />
   <!-- Password 입력 -->
-  <input type="password" id="password" placeholder="Password 입력" />
+  <input type="password" id="password" placeholder="Password" />
   <!-- 생성 버튼 -->
-  <button id="generate">생성하기</button>
+  <button id="generate">Generator</button>
 
   <!-- QR 코드가 표시될 영역 -->
   <div id="qrcode"></div>
@@ -29,7 +29,7 @@
       const ssid = document.getElementById('ssid').value.trim();
       const password = document.getElementById('password').value.trim();
       if (!ssid) {
-        alert('SSID를 입력해주세요.');
+        alert('Please enter your SSID.');
         return;
       }
       // WPA 고정, SSID와 Password를 이스케이프
