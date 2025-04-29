@@ -5,43 +5,117 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WiFi QR Code Generator</title>
   <style>
-    body { font-family: Arial, sans-serif; max-width: 400px; margin: 50px auto; text-align: center; }
-    input, button { width: 100%; padding: 10px; margin: 10px 0; font-size: 1rem; }
-    #qrcode { margin-top: 20px; }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0; /* 배경색 추가 (컨테이너와 구분되도록) */
+      margin: 0; /* body 기본 마진 제거 */
+      padding: 0; /* body 기본 패딩 제거 */
+      display: flex; /* flexbox를 사용하여 컨테이너를 중앙에 배치 */
+      justify-content: center; /* 가로 방향 중앙 정렬 */
+      align-items: center; /* 세로 방향 중앙 정렬 (필요시 min-height: 100vh; 추가) */
+      min-height: 100vh; /* 최소 높이를 뷰포트 높이로 설정하여 세로 중앙 정렬 가능하게 함 */
+    }
+
+    /* 새로운 컨테이너 스타일 */
+    .content-box {
+      background-color: #fff; /* 컨테이너 배경색 */
+      max-width: 400px; /* 컨테이너의 최대 너비 */
+      width: 90%; /* 작은 화면에서 너비 조절 */
+      padding: 30px 20px; /* 내부 여백 (상하 좌우) */
+      border: 1px solid #ccc; /* 테두리 */
+      border-radius: 15px; /* 둥근 모서리 */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 은은한 그림자 */
+      text-align: center; /* 컨테이너 안의 인라인/인라인-블록 요소 가운데 정렬 */
+      box-sizing: border-box; /* padding과 border를 width에 포함 */
+    }
+
+    h1 {
+        margin-top: 0; /* h1 기본 상단 마진 제거 */
+        margin-bottom: 20px; /* h1 하단 마진 추가 */
+        font-size: 1.5em; /* h1 폰트 크기 조절 */
+        color: #333;
+    }
+
+    /* 입력 필드 스타일 */
+    input {
+      width: 100%; /* 컨테이너 패딩 고려하여 100% */
+      padding: 12px 10px;
+      margin: 10px 0; /* 상하 마진 */
+      font-size: 1rem;
+      border: 1px solid #ddd; /* 입력 필드 테두리 */
+      border-radius: 5px; /* 입력 필드 모서리도 약간 둥글게 */
+      box-sizing: border-box; /* padding이 너비에 포함되도록 계산 */
+      display: block; /* 각 입력 필드를 새 줄에 표시 */
+    }
+
+    /* 버튼 스타일 */
+    button {
+      display: block; /* 버튼을 블록 요소로 만듭니다 */
+      width: 100%; /* 컨테이너 너비에 맞춤 */
+      padding: 12px;
+      margin: 20px 0; /* 상하 마진 */
+      font-size: 1.1rem;
+      background-color: #007bff; /* 버튼 배경색 */
+      color: white; /* 버튼 글자색 */
+      border: none; /* 버튼 테두리 없음 */
+      border-radius: 5px; /* 버튼 모서리 둥글게 */
+      cursor: pointer; /* 마우스 오버 시 커서 변경 */
+      transition: background-color 0.3s ease; /* 호버 효과 부드럽게 */
+    }
+    button:hover {
+        background-color: #0056b3; /* 호버 시 배경색 변경 */
+    }
+
+
+    /* QR 코드 표시 영역 스타일 */
+    #qrcode {
+      margin: 20px auto 0; /* 블록 요소인 #qrcode 영역을 가로 방향으로 가운데 정렬 */
+      width: 256px; /* QR 코드 이미지 너비와 동일하게 설정 */
+      height: 256px; /* QR 코드 이미지 높이와 동일하게 설정 */
+      /* 이 컨테이너 자체를 256x256으로 만들고 margin: auto로 가운데 정렬합니다. */
+    }
+    /* #qrcode 안에 생성되는 이미지나 캔버스 자체도 확실히 가운데 오도록 추가 */
+    #qrcode img, #qrcode canvas {
+        display: block; /* 블록 요소로 만들고 */
+        margin: 0 auto; /* 가운데 정렬합니다 */
+        max-width: 100%; /* 컨테이너 너비보다 커지지 않도록 */
+        height: auto; /* 비율 유지 */
+    }
+
   </style>
-  <!-- QRCode.js 라이브러리 로드 -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
-  <h1>WiFi QR Code Generator</h1>
-  <!-- SSID 입력 -->
-  <input type="text" id="ssid" placeholder="SSID" />
-  <!-- Password 입력 -->
-  <input type="password" id="password" placeholder="Password" />
-  <!-- 생성 버튼 -->
-  <button id="generate">Generator</button>
-
-  <!-- QR 코드가 표시될 영역 -->
-  <div id="qrcode"></div>
-
-  <script>
+  <div class="content-box">
+    <h1>WiFi QR Code Generator</h1>
+    <input type="text" id="ssid" placeholder="SSID" />
+    <input type="password" id="password" placeholder="Password" />
+    <button id="generate">QR 코드 생성</button> <div id="qrcode"></div>
+  </div> <script>
     document.getElementById('generate').addEventListener('click', function() {
       const ssid = document.getElementById('ssid').value.trim();
       const password = document.getElementById('password').value.trim();
       if (!ssid) {
-        alert('Please enter your SSID.');
+        alert('SSID를 입력해주세요.'); // 경고 메시지 한글화
         return;
       }
       // WPA 고정, SSID와 Password를 이스케이프
+      // 특수 문자를 이스케이프 처리하여 QR 코드가 제대로 인식되도록 합니다.
       const escapeInput = str => str.replace(/([\\;,\":])/g, '\\$1');
       const wifiString = `WIFI:T:WPA;S:${escapeInput(ssid)};P:${escapeInput(password)};;`;
+
       // 기존 QR 코드 제거
       document.getElementById('qrcode').innerHTML = '';
+
       // 새로운 QR 코드 생성
       new QRCode(document.getElementById('qrcode'), {
         text: wifiString,
         width: 256,
         height: 256,
+        // Optional: set a color if needed
+        // colorDark : "#000000",
+        // colorLight : "#ffffff",
+        // correctLevel : QRCode.CorrectLevel.H // 에러 복원 레벨 (높을수록 복잡해지지만 손상에 강함)
       });
     });
   </script>
